@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html> 
+  <head>
+    <title>Partials/Users</title>
+ <!-- THESE TWO VERSIONS BELOW MUST MATCH (good thing bower will catch that for us, but be aware if you are using CDN's)!!! -->
+    <script src="angular/angular.js"></script>
+    <script src="angular-route/angular-route.js"></script>
+<script>
+    //  inject the ngRoute dependency in the module.
+    var myApp = angular.module('myApp', ['ngRoute']);
+    //  use the config method to set up routing:
+    myApp.config(function ($routeProvider) {
+      $routeProvider
+        .when('/',{
+            templateUrl: 'partials/customizeUsers.html'
+        })
+        .when('/userList',{
+            templateUrl: 'partials/userList.html'
+        })
+        .otherwise({
+          redirectTo: '/'
+        });
+    });
+    myApp.factory('userFactory', ['$http', function($http){
+      var users = [{first_name: 'Sean', last_name: 'Carey', language: 'Javascript'}];
+      var factory = {};
+      factory.getUsers = function(callback){
+        callback(users);
+        } // end of .getUser  
+      factory.addUser = function(newUser, callback){
+        console.log('NEW')
+        users.push(newUser);
+        callback(users);
+        }  // end of .addUser
+      factory.deleteUser = function(index, callback){
+        for (var i=index; i<users.length-1; i++){
+            users[i] = users[i+1];
+          }
+          users.pop();
+        callback(users);
+        console.log("deleted index "+index);
+        }  // end of .deleteUser
+      return factory;
+    }]); //  end of appModule.factory
+
+    //  build the controllers
+    myApp.controller('CustomizeUsersController', ['$location', '$scope', 'userFactory', function ($location, $scope, userFactory) {
+        function setUsers(data){
+          console.log('ready');
+          $scope.users = data;
+          $scope.user = {};
+          console.log('SET');
+        }
+
+
+        userFactory.getUsers(setUsers);
+
+        $scope.addUser = function(){
+          console.log('ADD');
+          userFactory.addUser($scope.user, setUsers);
+          $location.url('/userList');
+        }
+
+        $scope.deleteUser = function(index){
+          console.log('DELETE')
+          userFactory.deleteUser(index, setUsers);
+          $location.url('/userList');
+        }
+    }]);  // end of CustomizeUsersController
+    
+    myApp.controller('UserListsController', ['$scope', 'userFactory', function ($scope, userFactory) {
+        function setUsers(data){
+          $scope.users = data;
+          $scope.user = {};
+        }
+
+        $scope.users = {};
+        $scope.user = {};
+        userFactory.getUsers(setUsers);
+    }]);  // end of UserListsController
+
+    </script>
+  </head>
+  <body>
+    <div ng-app='myApp'>
+        <a href="#/">Partial 1</a> | <a href="#/userList">Partial 2</a>
+        <div ng-view="">
+            <!-- Partials will go here!! -->
+
+        </div>
+    </div>
+  </body>
+</html>

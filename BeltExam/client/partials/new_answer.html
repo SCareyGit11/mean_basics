@@ -1,0 +1,14 @@
+<div ng-controller="QuestionsController">
+	<h2>{{question.text}}</h2>
+	<h3>{{question.deskcription}}</h3>
+
+	
+</div>
+<div ng-controller="AnswersController">
+<form ng-submit="addAnswer()">
+	Your Answer:<textarea ng-model="answer.text"></textarea>
+	Supporting Details: (optional) <textarea ng-model="answer.details"></textarea>
+	<button href="/">Cancel</button>
+	<input type="submit" value="Submit">
+</form>
+</div>

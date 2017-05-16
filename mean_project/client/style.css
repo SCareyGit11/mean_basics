@@ -1,0 +1,19 @@
+#letters {
+	display: inline-block;
+	font-size: 300%;
+	color: blue;
+}
+
+#oldLetters {
+	display: inline-block;
+	font-size: 300%;
+	color: red;
+}
+
+#words {
+	display: block;
+}
+
+#letters .listitem_1, .listitem_15, .listitem_30 {
+	font-size: 800%;
+}

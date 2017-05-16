@@ -1,0 +1,49 @@
+<html ng-app='myApp'>
+	<head>
+	    <script src='bower_components/angular/angular.js'/></script>
+	    <script type='text/javascript'>
+	    	  var myAppModule = angular.module('myApp', []);
+	    	        // the .controller() method adds a controller to the module
+      myAppModule.controller('studentsController', function ($scope){
+          $scope.students = [
+            {name: 'Mike', age: 34}, 
+            {name: 'John', age: 24}, 
+            {name: 'Trey', age: 24}, 
+            {name: 'India', age: 35}
+          ];
+          $scope.addStudent = function (){
+		    // add to the array
+		    $scope.students.push($scope.newStudent); 
+		    // clear the form values
+		    $scope.newStudent = {};
+		  }
+      });
+
+	    </script>
+    </head>
+    <body>
+    
+<!-- LOOK BACK AT "cONTROLLERS, SCOPE, THIS" FOR THE this. ALTERNATIVE -->
+    	  <div ng-controller='studentsController'> //<!--Using the ng-controller directive gives all of the HTML encapsulated by the parent div access to the specified controller and its associated scope. -->
+		    <ul>
+		        <li ng-repeat="student in students">{{ student.name }},{{ student.age }}</li>
+		    </ul> 
+
+		    <h3>Add a new student!</h3>
+			<form>
+    			Name: <input type='text' ng-model='newStudent.name'>
+    			Age: <input type='text' ng-model='newStudent.age'>
+    				<input type='submit' value='add new student' ng-click='addStudent()'>
+			</form> 
+		  </div>
+        <h3>{{ 49567 * 2243 }} </h3>
+        <h3 ng-bind='49567 * 2244'></h3>
+  		<div ng-init="students=[{name: 'Mike', age: 34}, {name: 'John', age: 24}, {name: 'Trey', age: 24}, {name: 'India', age: 35}]">
+    		<ul>
+        		<li ng-repeat="student in students">{{student.name}}, {{student.age}}</li>
+		    </ul>   
+		</div>
+
+
+    </body>
+</html>

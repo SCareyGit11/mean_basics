@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+	<script src="angular/angular.js" charset="utf-8"></script>
+    <script src="angular-route/angular-route.js" charset="utf-8"></script>
+    <script src="assets/app.js" charset="utf-8"></script>
+	
+		<title>Belt Exam</title>
+		<script>
+		myApp.factory('questionFactory', ['$http', function($http){
+    	var factory = {};
+    	factory.index = function(callback){
+    		console.log('index method of questionFactory');
+    		$http.get('/questions').then(function(res){
+    			if(callback && typeof callback== "function") {
+    				callback(res.data);
+    			}
+    		})
+    	}  //  end of factory.index
+ 		
+    	factory.create = function(newQuestion, callback){
+    		console.log('create method of questionFactory');
+    		$http.post('/questions', newQuestion).then(function(res){
+    			if(callback && typeof callback == "function") {
+    				callback(res.data);
+    			}
+    		})
+    	}  // end of factory.create
+       
+    	return factory;
+    }])  // end of quesionFactory
+
+			myApp.factory('answerFactory', ['$http', function($http){
+    	var factory = {};
+    	factory.index = function(callback){
+    		console.log('index method of answerFactory');
+    		$http.get('/answers').then(function(res){
+    			if(callback && typeof callback== "function") {
+    				callback(res.data);
+    			}
+    		})
+    	}  //  end of factory.index
+ 		
+    	factory.create = function(newAnswer, callback){
+    		console.log('create method of answerFactory');
+    		$http.post('/answers/:id', newAnswer).then(function(res){
+    			if(callback && typeof callback == "function") {
+    				callback(res.data);
+    			}
+    		})
+    	}  // end of factory.create
+       
+    	return factory;
+    }])  // end of answerFactory
+
+    myApp.controller("QuestionsController", ['$scope', 'questionFactory', function($scope, questionFactory){
+    	console.log('QuestionsController');
+    	
+        function setQuestions(data){
+            console.log('setQuestions');
+            $scope.questions = data;
+            $scope.question = {};
+        }
+
+        questionFactory.index(setQuestions);
+
+    	$scope.addQuestion= function(){
+    		questionFactory.create($scope.question, function(data){
+    			console.log('submit to create question');
+    			$scope.questions = data;
+    		})
+    	};
+    }])  // end of QuestionssController
+
+        myApp.controller("AnswersController", ['$scope', '$routeParams','answerFactory', function($scope, $routeParams, answerFactory){
+    	console.log('AnswersController');
+    	
+        function setAnswers(data){
+            console.log('setAnswers');
+            $scope.answers = data;
+            $scope.answer = {};
+        }
+
+        answerFactory.index(setAnswers);
+
+    	$scope.addAnswer= function(){
+    		answerFactory.create($scope.answer, $routeParams._question, function(data){
+    			console.log('submit to create answer');
+    			$scope.answers = data;
+    		})
+    	};
+            var count = 5;
+        $scope.count= function(){
+            $scope.count+=1;
+        }
+    }])  // end of AnswersController
+
+		</script>
+</head>
+<body ng-app="myApp">
+	<h1>Welcome</h1>
+    <p>  Hi, my laptop shut off with the server running and now it won't connect to mongo. From terminal, "Mongoose default connection error: Error: Trying to open unclosed connection."  It fills out this error from mongoose.js:44, "mongoose.connection.on( 'error', function ( err ) {
+  console.error( `Mongoose default connection error: ${ err }` );
+});". 
+"</p>
+	<a href="#/new_question">Ask a Question</a> 
+        
+        <div ng-controller='QuestionsController'>
+      	Search: <input type="text" ng-model="search.text">
+      
+      <table>
+      	<th> Question </th>
+      	<th> Answers  </th>
+      	<th> Actions  </th>
+
+        <tr>
+            <td> How's it going? </td>
+            <td> {{ count }} </td>
+            <td><a href="#/question/:id">Show</a> <a href="#/question/:id/new_answer">Answer</a>
+        </tr>
+      	<tr ng-repeat="question in questions | filter: search | orderBy:'text'">
+      		<td> {{ question.text }} </td>
+      		<td> {{ question.count}} </td>
+      		<td><a href="#/question/:id">Show</a> <a href="#/question/:id/new_answer">Answer</a>
+      	<tr>	
+    </div>
+        <div ng-view="">
+            <!-- Partials will go here!! -->
+
+        </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<html ng-app="app">
+	<head>		
+	  <meta charset="UTF-8">
+	  <title>Document</title>
+	  <script src = 'bower_components/angular/angular.js'></script>
+		<script>
+			 var app = angular.module('app', []);
+			 app.controller('divController', ["$scope", function($scope){
+			 	$scope.myName = 'Sean';
+				$scope.myFavoriteLanguage = 'JavaScript';
+				$scope.myFavoriteJSLibrary = 'Angular';
+			 }]); 
+		</script>
+	</head>
+	<body>
+		<div ng-controller = 'divController'>
+			<h3>Hello, {{ myName }}</h3>
+			<p>This should access the controller ('divController').  The name is {{ myName }}.  My favorite language, well.. {{ myFavoriteLanguage }}, and my favorite JS library is {{ myFavoriteJSLibrary }}.</p>
+		</div>
+	</body>
+</html>

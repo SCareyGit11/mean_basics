@@ -1,0 +1,98 @@
+<!doctype html>
+<html ng-app="myApp">
+
+	<head>
+	<script src="angular/angular.js"></script>
+    <script src="angular-route/angular-route.js"></script>
+    <script src="assets/app.js"></script>
+		<meta charset="utf-8">
+		<title>Mean App</title>
+		<script>
+    
+    myApp.factory('friendFactory', ['$http', function($http){
+    	var factory = {};
+    	factory.index = function(callback){
+    		console.log('index method of friendFactory');
+    		$http.get('/friends').then(function(res){
+    			if(callback && typeof callback== "function") {
+    				callback(res.data);
+    			}
+    		})
+    	}  //  end of factory.index
+
+    	factory.create = function(newFriend, callback){
+    		console.log('create method of friendFactory');
+    		$http.post('/friends', newFriend).then(function(res){
+    			if(callback && typeof callback == "function") {
+    				callback(res.data);
+    			}
+    		})
+    	}  // end of factory.create
+
+        factory.update = function(friend, callback){
+            console.log('update method of friendFactory');
+            $http.put('/friends/:id', friend).then(function(res){
+                if(callback && typeof callback == "function") {
+                    callback(res.data);
+                }
+            })
+        }   // end of factory.update
+    	return factory;
+    }])  // end of friendFactory
+
+    myApp.controller("AddFriendsController", ['$scope', 'friendFactory', function($scope, friendFactory){
+    	console.log('AddFriendsController');
+    	
+        function setFriends(data){
+            console.log('setFriends');
+            $scope.friends = data;
+            $scope.friend = {};
+        }
+
+        friendFactory.index(setFriends);
+
+    	$scope.addFriend= function(){
+    		friendFactory.create($scope.friend, function(data){
+    			console.log('submit to create friend');
+    			$scope.friends = data;
+    		})
+    	};
+    }])  // end of AddFriendsController
+
+    myApp.controller("UpdateFriendsController", ['$scope', '$routeParams', 'friendFactory', function($scope, $routeParams, friendFactory){
+        console.log('UpdateFriendsController');    
+        $scope.updateFriend = function(){
+            friendFactory.update($scope.friend, function(data){
+                console.log('submit form to update');
+                $scope.friends = data
+            })
+        }
+    }])  // end of UpdateFriendsController
+
+    </script>
+	</head>
+	<body>
+		<h1>Welcome</h1>
+        <a href="#/new">New</a> | <a href="#/edit/lookAtUrl">Edit</a>
+        <div ng-view="">
+            <!-- Partials will go here!! -->
+
+        </div>
+		<div ng-controller="AddFriendsController">
+			<span ng-bind="2+3"></span>
+			
+			<table>
+				<thead>
+					<th>Name</th>
+					<th>Birthday</th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="friend in friends">
+						<td>{{ friend.first_name}} {{friend.lastname }}</td>
+						
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

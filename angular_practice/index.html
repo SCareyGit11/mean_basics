@@ -1,0 +1,14 @@
+<html ng-app>    <!-- added ng-app directive to html element! -->
+<head>
+ <script src = 'bower_components/angular/angular.js'></script>
+</head>
+<body ng-init=" dojo='ninja' ">  <!-- added ng-init directive to body element and assigned a variable! -->
+	<script> 
+		var app = angular.module('app',[]);
+	 	console.log(app);
+	 	app.controller('PlayersController', ['$scope', function($scope) {
+		//javascript that controls the Player view goes here:
+		}]);
+	 </script>
+	 <h1>{{ dojo }}</h1> <!-- Should see 'ninja' printed to the page! -->
+</html>

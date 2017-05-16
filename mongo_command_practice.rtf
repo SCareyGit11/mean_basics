@@ -1,0 +1,218 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fmodern Lucida Console;}{\f1\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.14393}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs18\lang9 $ ./mongo\par
+MongoDB shell version: 3.2.10\par
+connecting to: test\par
+use my_first_db\par
+switched to db my_first_db\par
+show collections\par
+students\par
+db.students.update(\{name: "sean"\}, \{$push: \{interests: \{$each:['sitting']\}\}\})\par
+WriteResult(\{ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 \})\par
+db.students.find().pretty()\par
+\{\par
+        "_id" : ObjectId("5822378808c71c1e52dbc028"),\par
+        "name" : "sue",\par
+        "home_state" : "california",\par
+        "lucky_number" : 13,\par
+        "birthday" : \{\par
+                "month" : 2,\par
+                "day" : 10,\par
+                "year" : 1972\par
+        \},\par
+        "interests" : [\par
+                "coding",\par
+                "brunch",\par
+                "mongoDB"\par
+        ]\par
+\}\par
+\{\par
+        "_id" : ObjectId("582237e108c71c1e52dbc029"),\par
+        "name" : "sean",\par
+        "home_state" : "california",\par
+        "lucky_number" : 789,\par
+        "birthday" : \{\par
+                "month" : 1,\par
+                "day" : 1,\par
+                "year" : 2000\par
+        \},\par
+        "interests" : [\par
+                "coding",\par
+                "brunch",\par
+                "mongoDB",\par
+                "sitting"\par
+        ]\par
+\}\par
+\{\par
+        "_id" : ObjectId("5822383208c71c1e52dbc02a"),\par
+        "name" : "barney",\par
+        "home_state" : "washington",\par
+        "lucky_number" : 5,\par
+        "birthday" : \{\par
+                "month" : 7,\par
+                "day" : 7,\par
+                "year" : 1990\par
+        \},\par
+        "interests" : [\par
+                "coding",\par
+                "brunch",\par
+                "mongoDB"\par
+        ]\par
+\}\par
+\{\par
+        "_id" : ObjectId("582238b508c71c1e52dbc02b"),\par
+        "name" : "ricky",\par
+        "home_state" : "new york",\par
+        "lucky_number" : 1,\par
+        "birthday" : \{\par
+                "month" : 7,\par
+                "day" : 4,\par
+                "year" : 1976\par
+        \},\par
+        "interests" : [\par
+                "coding",\par
+                "brunch",\par
+                "mongoDB"\par
+        ]\par
+\}\par
+\{\par
+        "_id" : ObjectId("582238fc08c71c1e52dbc02c"),\par
+        "name" : "carol",\par
+        "home_state" : "connecticut",\par
+        "lucky_number" : 6,\par
+        "birthday" : \{\par
+                "month" : 5,\par
+                "day" : 11,\par
+                "year" : 1980\par
+        \},\par
+        "interests" : [\par
+                "coding",\par
+                "brunch",\par
+                "mongoDB"\par
+        ]\par
+\}\par
+db.students.update(\{name: "carol"\}, \{$push: \{interests:\{$each: ['knitting']\}\}\})\par
+WriteResult(\{ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 \})\par
+db.students.update(\{name: "barney"\}, \{$push: \{interests: \{$each: ['singing']\}\}\})\par
+WriteResult(\{ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 \})\par
+db.students.update(\{name: "bob"\}, \{$push: \{interests: \{$each: ['popping_off']\}\}\})\par
+WriteResult(\{ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 \})\par
+db.students.find().pretty()\par
+\{\par
+        "_id" : ObjectId("5822378808c71c1e52dbc028"),\par
+        "name" : "sue",\par
+        "home_state" : "california",\par
+        "lucky_number" : 13,\par
+        "birthday" : \{\par
+                "month" : 2,\par
+                "day" : 10,\par
+                "year" : 1972\par
+        \},\par
+        "interests" : [\par
+                "coding",\par
+                "brunch",\par
+                "mongoDB"\par
+        ]\par
+\}\par
+\{\par
+        "_id" : ObjectId("582237e108c71c1e52dbc029"),\par
+        "name" : "sean",\par
+        "home_state" : "california",\par
+        "lucky_number" : 789,\par
+        "birthday" : \{\par
+                "month" : 1,\par
+                "day" : 1,\par
+                "year" : 2000\par
+        \},\par
+        "interests" : [\par
+                "coding",\par
+                "brunch",\par
+                "mongoDB",\par
+                "sitting"\par
+        ]\par
+\}\par
+\{\par
+        "_id" : ObjectId("5822383208c71c1e52dbc02a"),\par
+        "name" : "barney",\par
+        "home_state" : "washington",\par
+        "lucky_number" : 5,\par
+        "birthday" : \{\par
+                "month" : 7,\par
+                "day" : 7,\par
+                "year" : 1990\par
+        \},\par
+        "interests" : [\par
+                "coding",\par
+                "brunch",\par
+                "mongoDB",\par
+                "singing"\par
+        ]\par
+\}\par
+\{\par
+        "_id" : ObjectId("582238b508c71c1e52dbc02b"),\par
+        "name" : "ricky",\par
+        "home_state" : "new york",\par
+        "lucky_number" : 1,\par
+        "birthday" : \{\par
+                "month" : 7,\par
+                "day" : 4,\par
+                "year" : 1976\par
+        \},\par
+        "interests" : [\par
+                "coding",\par
+                "brunch",\par
+                "mongoDB"\par
+        ]\par
+\}\par
+\{\par
+        "_id" : ObjectId("582238fc08c71c1e52dbc02c"),\par
+        "name" : "carol",\par
+        "home_state" : "connecticut",\par
+        "lucky_number" : 6,\par
+        "birthday" : \{\par
+                "month" : 5,\par
+                "day" : 11,\par
+                "year" : 1980\par
+        \},\par
+        "interests" : [\par
+                "coding",\par
+                "brunch",\par
+                "mongoDB",\par
+                "knitting"\par
+        ]\par
+\}\par
+db.students.update(\{name: "ricky"\}, \{$push: \{interests: "taxes"\}\})\par
+WriteResult(\{ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 \})\par
+db.students.find(name: "ricky")\par
+2016-11-08T14:01:09.523-0800 E QUERY    [thread1] SyntaxError: missing ) after argum   ent list @(shell):1:21\par
+\par
+db.students.find(\{name: "ricky"\})\par
+\{ "_id" : ObjectId("582238b508c71c1e52dbc02b"), "name" : "ricky", "home_state" : "ne   w york", "lucky_number" : 1, "birthday" : \{ "month" : 7, "day" : 4, "year" : 1976 \},    "interests" : [ "coding", "brunch", "mongoDB", "taxes" ] \}\par
+db.students.update(\{name: "ricky"\}, \{$pull: \{"interests": "taxes"\}\})\par
+2016-11-08T14:05:22.056-0800 E QUERY    [thread1] SyntaxError: illegal character @(s   hell):1:65\par
+\par
+db.students.update(\{name: "ricky"\}, \{$pull: \{"interests" : "taxes"\}\})\par
+WriteResult(\{ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 \})\par
+db.students.find(\{name: "ricky"\})\par
+\{ "_id" : ObjectId("582238b508c71c1e52dbc02b"), "name" : "ricky", "home_state" : "new york", "lucky_number" : 1, "birthday" : \{ "month" : 7, "day" : 4, "year" : 1976 \}, "interests" : [ "coding", "brunch", "mongoDB" ] \}\par
+db.students.remove(\{$or: [\{home_state:"california"\}, \{home_state: "washington"\}]\})\par
+WriteResult(\{ "nRemoved" : 3 \})\par
+db.students.remove(\{name: "ricky"\})\par
+WriteResult(\{ "nRemoved" : 1 \})\par
+db.students.find()\par
+\{ "_id" : ObjectId("582238fc08c71c1e52dbc02c"), "name" : "carol", "home_state" : "connecticut", "lucky_number" : 6, "birthday" : \{ "month" : 5, "day" : 11, "year" : 1980 \}, "interests" : [ "coding", "brunch", "mongoDB", "knitting" ] \}\par
+db.students.update(\{\}, \{$set: \{"number_of_belts":0\}\})\par
+WriteResult(\{ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 \})\par
+db.students.update(\{\}, \{$rename: \{"number_of_belts": "belts_earned"\}\})\par
+WriteResult(\{ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 \})\par
+db.students.update(\{home_state: "connecticut"\}, \{$inc: \{belts_earned: 1\}\})\par
+WriteResult(\{ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 \})\par
+db.students.update(\{\}, \{$unset: \{lucky_number:""\}\})\par
+WriteResult(\{ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 \})\par
+db.students.update(\{\}, \{$currentDate: \{updated_on:true\}\},\{multi:true\})\par
+WriteResult(\{ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 \})\par
+db.students.find(\{\})\par
+\{ "_id" : ObjectId("582238fc08c71c1e52dbc02c"), "name" : "carol", "home_state" : "connecticut", "birthday" : \{ "month" : 5, "day" : 11, "year" : 1980 \}, "interests" : [ "coding", "brunch", "mongoDB", "knitting" ], "belts_earned" : 1, "updated_on" : ISODate("2016-11-08T22:18:47.635Z") \}\par
+\f1\fs22\par
+}
+ 

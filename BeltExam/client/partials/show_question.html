@@ -1,0 +1,19 @@
+<div ng-controller="QuestionsController">
+	<a href="/">Home</a> | <a href="#/question/:id/new_answer">Answer this Question</a> | <a href="/">Logout</a>
+
+	<h1>How's it going?</h1>
+	<h1>{{question.text}}</h1>
+	<h3>{{question.description}}</h3>
+
+	<table ng-controller="AnswersController">
+		<tr><td>Zeke</td><td>Pretty good, man</td><td>{{count}} Likes</td><td><button ng-click="count()">Like</button></td></tr>
+		<tr ng-repeat="answer in answers">
+			<td>{{answer._user.name}}</td>
+			<td>{{answer.text}}</td>
+			<td>{{answer.likes}} Likes </td>
+			<td><button ng-click="like()"></button>Like</a></td>
+		
+		</tr>
+	</table>
+</div>
+

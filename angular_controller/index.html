@@ -1,0 +1,49 @@
+<html ng-app="myApp">
+	<head>		
+	  <meta charset="UTF-8">
+	  <title>Document</title>
+	  <script src = 'bower_components/angular/angular.js'></script>
+		<script>
+			 var app = angular.module('myApp', []);
+			 app.controller('divController', ["$scope", function($scope){
+			 	$scope.myName = 'Sean';
+			 }]);
+			 app.controller('foodController', ["$scope", function($scope){
+			 	$scope.food = [];
+			 	$scope.addFood = function(){
+			 		$scope.food.push($scope.newFood);
+			 		$scope.newFood = {};
+			 	}
+			 }]) 
+		</script>
+	</head>
+	<body>
+		<div ng-controller = 'divController'>
+			<h3>Hello, {{ myName }}</h3>
+		</div>
+		
+			<h4 ng-bind = " 'Favorite Foods' "></h4>
+			<h5 ng-init = "food = [{food : 'Meat and Cheese'}] "></h5>
+			<ul>
+				<li ng-repeat = 'food in food'>{{food.food}}</li>
+			</ul>
+		<div ng-controller = 'foodController'>
+			<ul>
+				<li ng-repeat = 'food in food'>{{ food.food }}</li>
+			</ul>
+			<form>
+				Favorite Food: <input type="text" ng-model="newFood.food">
+				<input type="submit" value="Add a Dish!" ng-click="addFood()">
+			</form>
+			<p>Currently Typing {{ newFood.food }}>></p>
+		</div>
+		<div>
+			<form>
+				Click me: <input type="checkbox" ng-model="checked" ><br/>
+				Type Something: <input type="text"  ng-model="text" ><br>
+			</form>
+			<h5 ng-show = "checked" class="ng-hide">Doggy Bag?</h5>
+			<h5 ng-show = "text" class="ng-hide">Seconds?</h5>
+		</div>
+	</body>
+</html>

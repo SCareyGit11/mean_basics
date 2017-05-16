@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <script src="angular/angular.js"></script>
+    <script src="angular-route/angular-route.js"></script>
+    <link href="style.css" rel="stylesheet"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    	var myApp = angular.module('myApp', ['ngRoute']);
+
+    	myApp.factory('letterFactory',['$http'] function($http){
+    		var abc = ['a', 'e','i','o','u','a','a','b','c','d','e','e','e','e','e','f','g','h','i','j','k','l','m','n','o','o','o','p','q','r','s','s','s','t','t','u','v','w','x','y','z']
+    		var letters = ['a','e','l','n','r','s','t','a','e'];
+            var oldLetters = [];
+    		var error = "";
+    		var factory = {};
+            var score = 0;
+    		
+    		factory.getLetters = function(callback){
+    			callback(letters);
+    		}
+
+
+    		factory.addLetter = function(callback){
+    			var newLetter = abc[Math.floor(Math.random() * abc.length)];
+                console.log(letters.length);
+                console.log(newLetter);
+
+    			letters.push(newLetter);
+                console.log(letters);
+    			callback(letters);
+    		}
+
+            //$(document).ready(function(){
+                $("input").click(function(){
+                    $("li").addClass(function(n){
+                    return "listitem_" + n;
+                    });
+                });
+           // });    
+            
+            var words = [];
+            var score = 0;
+
+            factory.getWords = function(callback){
+                callback(words);
+            }
+
+            factory.getScore = function(callback){
+                callback(score);
+            }
+
+
+            factory.checkWord = function(word, callback1, callback2, callback3, callback4){
+                console.log(word);
+                var confirmed = "";
+            // LIMIT AVAILABLE LETTERS BASED ON TOTAL LETTERS    
+                var array = letters;
+            // VERIFY LETTERS TYPED IN WORD ARE AVAILABLE IN ARRAY
+            // IF SUCCESSFUL, REMOVE USED LETTERS
+                var count=0;
+                for (var i=0; i<word.length; i++){
+                    for (var j=0; j<array.length; j++){
+                        if(word[i]==array[j]){
+                            
+                            confirmed +=array[j];
+                            // remove used letters from array
+                            for(k=j; k<array.length-1; k++){
+                                array[k] = array[k+1];
+                                
+                            }
+                            array.pop();
+                            count = 0
+                            break;
+                        }
+                        else{
+                            count +=1;
+                            console.log(count);
+                        }
+                    }
+                    console.log(confirmed);
+                    if(count==array.length && array.length>0){
+                        console.log('no-match');
+                        words.push('no-match');
+
+                        callback2(letters);
+                        score -= Math.pow(2,word.length);
+                        callback3(score);
+                        return callback1(words);
+                    }
+
+                } 
+                console.log(confirmed);
+    // CHECK THE DICTIONARY ############################################3            
+                $http.post('/words/:confirmed', confirmed).then(function(res){
+                    if(callback && typeof callback == "function") {
+                    console.log(res.data);
+                    callback(res.data);
+                }
+                })
+                words.push(confirmed);
+                callback1(words);
+            // If the submitted word uses the last of the available letters, then make "oldLetters" available again.
+                if(array.length==0 && oldLetters.length>0){
+                    array = oldLetters;
+                    oldLetters = [];
+                }    
+                
+                callback2(array);
+                score += Math.pow(2,word.length);
+                callback3(score);
+                callback4(oldLetters);
+
+            }; // end of checkWord  
+
+    //  Populate an array called 'oldLetters' with the oldest letter in the 'letters' array. Then remove that letter from 'letters' array.
+            factory.oldLetter = function(callback1, callback2){
+                oldLetters.push(letters[0]);
+                for (var i=0; i<letters.length; i++){
+                    letters[i] = letters[i+1];
+                }
+                letters.pop();
+                callback1(oldLetters);
+                callback2(letters);
+            }
+
+            return factory;
+    	}); // end of letterFactory
+
+    	myApp.controller('LettersController', ['$scope', 'letterFactory', function($scope, letterFactory){
+    		
+            function setScore(data){
+                $scope.score = data;
+            }
+
+            letterFactory.getScore(setScore);
+            $scope.letters = {};
+            
+    		
+            function setLetters(data){
+    			$scope.letters = data;
+    			
+    		}
+
+    		letterFactory.getLetters(setLetters);
+
+    		function addLetter(){
+    			
+                letterFactory.addLetter(setLetters);
+    		}
+    // TIMER FOR NEW LETTERS        
+    		setInterval(function() {
+                addLetter();
+                
+                $scope.$apply();
+            }, 5000);
+
+
+            function oldLetter(){
+                letterFactory.oldLetter(setOldLetters, setLetters);
+            }
+
+            function setOldLetters(data){
+                $scope.oldLetters = data;
+            }
+    //  TIMER FOR oldLETTER (letters become unavailable based on time limit)
+            setInterval(function() {
+                oldLetter();
+                $scope.$apply();
+            }, 10000);
+    	
+            $scope.words = {};
+            
+            function setWords(data){
+                $scope.words = data;
+            }
+            
+           letterFactory.getWords(setWords);
+
+            $scope.sendWord = function(){
+                letterFactory.checkWord($scope.newWord, setWords, setLetters, setScore, setOldLetters);
+            };
+        }]);  // end of LettersController
+    </script>
+</head>
+<body ng-app='myApp'>
+	<div ng-controller="LettersController">
+
+		
+            <h2>{{ score }}</h2>
+		<ul>
+			<li id="oldLetters" ng-repeat="oldLetter in oldLetters track by $index">{{ oldLetter }}</li>
+            <li id="letters" ng-repeat="letter in letters track by $index">{{ letter }}</li>  
+        </ul> 
+     
+
+		<div id="words">
+        <form ng-submit="sendWord()">
+            <input type="text" ng-model="newWord">
+            
+            <input type="submit">
+        </form>
+
+                   <h2 ng-if="newWord"> Typing: {{ newWord }} </h2>
+        Collection:<h1 ng-repeat="word in words track by $index">{{ word }}</h1>
+        </div>
+    </div>
+</body>
+
+</html>

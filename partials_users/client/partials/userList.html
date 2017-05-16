@@ -1,0 +1,18 @@
+<body>
+<div ng-controller='UserListsController'>
+<h1>User List Controller</h1>
+	<table>
+		<th>  First Name  </th>
+		<th>  Last Name </th>
+		<th> Fav. Language </th>
+
+
+		<tr ng-repeat="user in users track by $index">
+			<td> {{ user.first_name }} </td>
+			<td> {{ user.last_name }} </td>
+			<td> ${{ user.language }} </td>
+		</tr>
+	</table>
+	
+</div>
+</body>
